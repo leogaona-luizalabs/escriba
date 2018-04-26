@@ -14,7 +14,7 @@
 
 package main
 
-import "github.com/luizalabs/metatron/cmd"
+import "github.com/luizalabs/escriba/cmd"
 
 func main() {
 	cmd.Execute()
