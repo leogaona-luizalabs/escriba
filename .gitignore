@@ -1,0 +1,6 @@
+metatron
+vendor/
+*.test
+.vscode
+*debug
+*.coverprofile
