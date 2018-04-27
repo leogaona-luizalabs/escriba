@@ -26,10 +26,6 @@
 
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/mitchellh/go-homedir"
-
-[[constraint]]
   name = "github.com/spf13/cobra"
   version = "0.0.2"
 
@@ -40,3 +36,23 @@
 [prune]
   go-tests = true
   unused-packages = true
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/shomali11/slacker"
+
+[[constraint]]
+  name = "gopkg.in/DATA-DOG/go-sqlmock.v1"
+  version = "1.3.0"
+
+[[constraint]]
+  name = "github.com/sirupsen/logrus"
+  version = "1.0.5"
+
+[[constraint]]
+  name = "github.com/go-sql-driver/mysql"
+  version = "1.3.0"
+
+[[constraint]]
+  name = "github.com/ryanuber/columnize"
+  version = "2.1.0"

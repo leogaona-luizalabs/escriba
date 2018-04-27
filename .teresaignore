@@ -1,0 +1,13 @@
+glide.yaml
+glide.lock
+.env
+.vscode
+.circleci
+.git
+.gitignore
+test-coverage.sh
+Readme.md
+LICENSE
+.travis.yml
+*.coverprofile
+Gopkg.*

@@ -14,7 +14,8 @@
 
 package main
 
-import "github.com/luizalabs/metatron/cmd"
+import _ "github.com/go-sql-driver/mysql"
+import "github.com/luizalabs/escriba/cmd"
 
 func main() {
 	cmd.Execute()
