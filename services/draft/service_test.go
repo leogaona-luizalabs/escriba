@@ -3,6 +3,7 @@ package draft_test
 import (
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/luizalabs/escriba/services/draft"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
@@ -18,7 +19,7 @@ func TestAddOK(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("insert into draft").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(1, 1))
+	mock.ExpectExec("insert into drafts").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -47,7 +48,7 @@ func TestAddError(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("insert into draft").WithArgs(draftURL).WillReturnError(errors.New("table not found"))
+	mock.ExpectExec("insert into drafts").WithArgs(draftURL).WillReturnError(errors.New("table not found"))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -76,7 +77,7 @@ func TestApproveOK(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("update draft d set approvals").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(1, 1))
+	mock.ExpectExec("update drafts d set approvals").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -105,7 +106,7 @@ func TestApproveError(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("update draft d set approvals").WithArgs(draftURL).WillReturnError(errors.New("table not found"))
+	mock.ExpectExec("update drafts d set approvals").WithArgs(draftURL).WillReturnError(errors.New("table not found"))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -134,7 +135,7 @@ func TestApproveNoRowsUpdated(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("update draft d set approvals").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(0, 0))
+	mock.ExpectExec("update drafts d set approvals").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(0, 0))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -161,9 +162,9 @@ func TestListPendingReviewsOK(t *testing.T) {
 		t.Fail()
 	}
 	defer db.Close()
-	columns := []string{"url", "approvals"}
+	columns := []string{"url", "approvals", "created_at"}
 
-	mock.ExpectQuery("select url, approvals from draft where published_at is null and approvals <").WillReturnRows(sqlmock.NewRows(columns).AddRow("url1", 0))
+	mock.ExpectQuery("select url, approvals, created_at from drafts where published_at is null and approvals <").WillReturnRows(sqlmock.NewRows(columns).AddRow("url1", 0, time.Now().Format(time.RFC3339)))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -195,7 +196,7 @@ func TestListPendingReviewsError(t *testing.T) {
 		t.Fail()
 	}
 	defer db.Close()
-	mock.ExpectQuery("select url, approvals from draft where published_at is null and approvals <").WillReturnError(errors.New("table not found"))
+	mock.ExpectQuery("select url, approvals, created_at from drafts where published_at is null and approvals <").WillReturnError(errors.New("table not found"))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -227,9 +228,9 @@ func TestListPendingPublicationsOK(t *testing.T) {
 		t.Fail()
 	}
 	defer db.Close()
-	columns := []string{"url", "approvals"}
+	columns := []string{"url", "approvals", "created_at"}
 
-	mock.ExpectQuery("select url, approvals from draft where published_at is null and approvals >=").WillReturnRows(sqlmock.NewRows(columns).AddRow("url1", 5))
+	mock.ExpectQuery("select url, approvals, created_at from drafts where published_at is null and approvals >=").WillReturnRows(sqlmock.NewRows(columns).AddRow("url1", 0, time.Now().Format(time.RFC3339)))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -261,7 +262,7 @@ func TestListPendingPublicationsError(t *testing.T) {
 		t.Fail()
 	}
 	defer db.Close()
-	mock.ExpectQuery("select url, approvals from draft where published_at is null and approvals >=").WillReturnError(errors.New("table not found"))
+	mock.ExpectQuery("select url, approvals, created_at from drafts where published_at is null and approvals >=").WillReturnError(errors.New("table not found"))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -295,7 +296,7 @@ func TestMarkAsPublishedOK(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("update draft d set published_at = NOW()").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(1, 1))
+	mock.ExpectExec("update drafts d set published_at = NOW()").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(1, 1))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -324,7 +325,7 @@ func TestMarkAsPublishedError(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("update draft d set published_at = NOW()").WithArgs(draftURL).WillReturnError(errors.New("table not found"))
+	mock.ExpectExec("update drafts d set published_at = NOW()").WithArgs(draftURL).WillReturnError(errors.New("table not found"))
 
 	// chamada do service
 	service := draft.New(db, 1)
@@ -353,7 +354,7 @@ func TestMarkAsPublishedNoRowsUpdated(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectExec("update draft d set published_at = NOW()").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(0, 0))
+	mock.ExpectExec("update drafts d set published_at = NOW()").WithArgs(draftURL).WillReturnResult(sqlmock.NewResult(0, 0))
 
 	// chamada do service
 	service := draft.New(db, 1)

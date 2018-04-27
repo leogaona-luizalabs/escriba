@@ -52,3 +52,7 @@
 [[constraint]]
   name = "github.com/go-sql-driver/mysql"
   version = "1.3.0"
+
+[[constraint]]
+  name = "github.com/ryanuber/columnize"
+  version = "2.1.0"

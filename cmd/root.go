@@ -46,13 +46,17 @@ func Execute() {
 }
 
 func init() {
+	initConfig()
 	cobra.OnInitialize(initConfig)
-	rootCmd.Flags().String("slack_token", "", "slack_api_token")
-	rootCmd.Flags().String("mysql_dsn", "", "mysql data source name")
-	rootCmd.Flags().Int("draft_approvals", 2, "number of approvals for a draft to be eligible for publication")
+	rootCmd.PersistentFlags().String("slack_token", "", "slack_api_token")
+	rootCmd.PersistentFlags().String("mysql_dsn", "", "mysql data source name")
+	rootCmd.PersistentFlags().Int("draft_approvals", 2, "number of approvals for a draft to be eligible for publication")
+	viper.BindPFlags(rootCmd.PersistentFlags())
+	viper.BindPFlags(rootCmd.Flags())
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
+
 }

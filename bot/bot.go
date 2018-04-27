@@ -22,6 +22,7 @@ func Start(slackToken string, mysqlDSN string, draftApprovals int) {
 		"operation_name": "start",
 	})
 
+	// cria o client do slacker e a conexão com o mysql
 	slackClient := slacker.NewClient(slackToken)
 	db, err := util.OpenMySQLConnection(mysqlDSN)
 	if err != nil {
@@ -38,8 +39,14 @@ func Start(slackToken string, mysqlDSN string, draftApprovals int) {
 		service:     draft.New(db, draftApprovals),
 	}
 
-	slackClient.Command("oi", "healthcheck", bot.HealthCheck)
+	// registra os comandos do bot
 	slackClient.DefaultCommand(bot.Default)
+	slackClient.Command("hello", "healthcheck do bot", bot.HealthCheck)
+	slackClient.Command("pending reviews", "lista artigos pendentes de revisão", bot.ListPendingReviews)
+	slackClient.Command("pending publications", "lista artigos pendentes de publicação", bot.ListPendingPublications)
+	slackClient.Command("add <url>", "adiciona artigo", bot.Add)
+	slackClient.Command("approve <url>", "aprova um artigo", bot.Approve)
+	slackClient.Command("publish <url>", "marca um artigo como publicado", bot.Publish)
 
 	logger.Info()
 

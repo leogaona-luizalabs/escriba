@@ -10,5 +10,5 @@ import (
 func (bot *Bot) Default(request *slacker.Request, response slacker.ResponseWriter) {
 	response.Typing()
 	time.Sleep(1 * time.Second)
-	response.Reply("Me desculpe jovem, não entendi que diabos você está falando")
+	response.Reply("Me desculpe jovem, não entendi o que você quer dizer")
 }
