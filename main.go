@@ -14,6 +14,7 @@
 
 package main
 
+import _ "github.com/go-sql-driver/mysql"
 import "github.com/luizalabs/escriba/cmd"
 
 func main() {

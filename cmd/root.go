@@ -19,12 +19,9 @@ import (
 	"os"
 
 	"github.com/luizalabs/escriba/bot"
-	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
-
-var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -32,7 +29,10 @@ var rootCmd = &cobra.Command{
 	Short: "Chatbot que organiza artigos",
 	Long:  "Chatbot que organiza artigos",
 	Run: func(cmd *cobra.Command, args []string) {
-		bot.Start(viper.GetString("slack_token"))
+		slackToken := viper.GetString("slack_token")
+		approvals := viper.GetInt("draft_approvals")
+		mysqlDSN := viper.GetString("mysql_dsn")
+		bot.Start(slackToken, mysqlDSN, approvals)
 	},
 }
 
@@ -48,30 +48,11 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.Flags().String("slack_token", "", "slack_api_token")
+	rootCmd.Flags().String("mysql_dsn", "", "mysql data source name")
+	rootCmd.Flags().Int("draft_approvals", 2, "number of approvals for a draft to be eligible for publication")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		// Search config in home directory with name ".metatron" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".metatron")
-	}
-
 	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
 }
