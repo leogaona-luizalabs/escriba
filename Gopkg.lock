@@ -43,6 +43,12 @@
   version = "v1.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/luizalabs/lockdown"
+  packages = ["services"]
+  revision = "a372f97f34339b43fb0213a814393c888c858d1c"
+
+[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "c3beff4c2358b44d0493c7dda585e7db7ff28ae6"
@@ -178,6 +184,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "71c49d328d2d13d8cbbac4513dbc2e7bf68502feaf114082d526fde0646a3772"
+  inputs-digest = "7ba9a0a405c78b04b30cff1115936b87c2a07a326ecafca0733d6e3fe1965ead"
   solver-name = "gps-cdcl"
   solver-version = 1

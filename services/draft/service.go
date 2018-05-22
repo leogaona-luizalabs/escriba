@@ -2,8 +2,9 @@ package draft
 
 import (
 	"database/sql"
-	"errors"
 	"time"
+
+	"github.com/luizalabs/escriba/services"
 
 	"github.com/sirupsen/logrus"
 
@@ -102,7 +103,7 @@ func (s *Service) Approve(url string) error {
 
 	if rows == 0 {
 		logger.Error()
-		return errors.New("no drafts updated")
+		return services.NewNotFoundError("draft not found")
 	}
 
 	logger.Info()
@@ -247,7 +248,7 @@ func (s *Service) MarkAsPublished(url string) error {
 
 	if rows == 0 {
 		logger.Error()
-		return errors.New("no draft updated")
+		return services.NewNotFoundError("draft not found")
 	}
 
 	logger.Info()

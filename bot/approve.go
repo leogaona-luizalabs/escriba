@@ -3,6 +3,7 @@ package bot
 import (
 	"time"
 
+	"github.com/luizalabs/escriba/services"
 	"github.com/shomali11/slacker"
 )
 
@@ -19,7 +20,12 @@ func (b *Bot) Approve(request *slacker.Request, response slacker.ResponseWriter)
 
 	err := b.service.Approve(url)
 	if err != nil {
-		response.Reply("Me desculpe, ocorreu um erro ao tentar processar o seu pedido")
+		switch err.(type) {
+		case *services.NotFoundError:
+			response.Reply("Me desculpe, não consegui encontrar o artigo com esta URL. Poderia checar e mandar o comando novamente?")
+		default:
+			response.Reply("Me desculpe, ocorreu um erro ao tentar processar a sua solicitação")
+		}
 		return
 	}
 
