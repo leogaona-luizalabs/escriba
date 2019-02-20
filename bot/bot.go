@@ -46,7 +46,7 @@ func Start(slackToken string, mysqlDSN string, draftApprovals int) {
 	slackClient.Command("pending publications", "lista artigos pendentes de publicação", bot.ListPendingPublications)
 	slackClient.Command("add <url>", "adiciona artigo", bot.Add)
 	slackClient.Command("approve <url>", "aprova um artigo", bot.Approve)
-	slackClient.Command("publish <url>", "marca um artigo como publicado", bot.Publish)
+	slackClient.Command("remove <url>", "remove um artigo que já foi publicado", bot.Remove)
 
 	logger.Info()
 

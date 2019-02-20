@@ -7,8 +7,8 @@ import (
 	"github.com/shomali11/slacker"
 )
 
-// Publish marca um artigo como publicado
-func (b *Bot) Publish(request *slacker.Request, response slacker.ResponseWriter) {
+// Remove marca um artigo como publicado
+func (b *Bot) Remove(request *slacker.Request, response slacker.ResponseWriter) {
 	response.Typing()
 	time.Sleep(1 * time.Second)
 
@@ -29,5 +29,5 @@ func (b *Bot) Publish(request *slacker.Request, response slacker.ResponseWriter)
 		return
 	}
 
-	response.Reply("O artigo foi marcado como publicado e não aparecerá mais nas pesquisas")
+	response.Reply("O artigo foi removido com sucesso")
 }
